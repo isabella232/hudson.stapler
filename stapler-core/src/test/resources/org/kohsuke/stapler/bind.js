@@ -13,7 +13,7 @@
  *
  *******************************************************************************/
 // // included into the page as an adjunct
-// @include org.kohsuke.stapler.framework.prototype.prototype
+// @include org.eclipse.hudson.stapler.framework.prototype.prototype
 
 function makeStaplerProxy(url,crumb,methods) {
     if (!url.endsWith('/')) url+='/';
