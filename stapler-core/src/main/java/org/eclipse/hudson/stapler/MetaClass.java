@@ -60,7 +60,7 @@ public class MetaClass extends TearOffSupport {
      */
     public final WebApp webApp;
 
-    /*package*/ MetaClass(WebApp webApp, Class clazz) {
+    public MetaClass(WebApp webApp, Class clazz) {
         this.clazz = clazz;
         this.webApp = webApp;
         this.baseClass = webApp.getMetaClass(clazz.getSuperclass());
