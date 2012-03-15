@@ -1,0 +1,88 @@
+<!-- **************************************************************************
+#
+# Copyright (c) 2012 Oracle Corporation.
+#
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Eclipse Public License v1.0
+# which accompanies this distribution, and is available at
+# http://www.eclipse.org/legal/epl-v10.html
+#
+# Contributors: 
+#
+#    Winston Prakash 
+#
+#************************************************************************** --> 
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+        <relativePath /> <!-- avoid cycle -->
+    </parent>
+    
+    <groupId>org.eclipse.hudson.stapler</groupId>
+    <artifactId>stapler-parent</artifactId>
+    <packaging>pom</packaging>
+  
+    <name>Stapler Parent</name>
+    <version>3.0.0-SNAPSHOT</version>
+
+    <description>
+        Stapler, a HTTP request handling engine for Hudson
+    </description>
+
+    <licenses>
+        <license>
+            <name>Eclipse Public License v1.0</name>
+            <url>http://www.eclipse.org/legal/epl-v10.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    
+    <scm>
+        <connection>scm:git:git://git.eclipse.org/gitroot/hudson/org.eclipse.hudson.stapler.git</connection>
+        <developerConnection>scm:git:git://git.eclipse.org/gitroot/hudson/org.eclipse.hudson.stapler.git</developerConnection>
+        <url>http://git.eclipse.org/c/hudson/org.eclipse.hudson.stapler.git/</url>
+    </scm>
+
+
+    <developers>
+        <developer>
+            <id>wjprakash</id>
+            <name>Winston Prakash</name>
+            <email>Winston.Prakash@gmail.com</email>
+            <roles>
+                <role>Maintainer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Kohsuke Kawaguchi</name>
+            <id>kohsuke</id>
+            <roles>
+                <role>Original Contributor</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <modules>
+        <module>stapler-core</module>
+        <module>stapler-jelly</module>
+    </modules>
+
+    <dependencies>
+        
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+            <type>jar</type>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
+ 
+
+</project>
