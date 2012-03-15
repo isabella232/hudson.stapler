@@ -9,23 +9,30 @@
 #
 # Contributors: 
 #
-#    Kohsuke Kawaguchi,
+#    Kohsuke Kawaguchi, WInston Prakash
 #        
 #************************************************************************** -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     
-    <groupId>org.eclipse.hudson</groupId>
-    <artifactId>stapler-core</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
+    <parent>
+        <groupId>org.eclipse.hudson.stapler</groupId>
+        <artifactId>stapler-parent</artifactId>
+        <version>3.0.0-SNAPSHOT</version>
+        <relativePath> ../pom.xml</relativePath>
+    </parent>
     
-    <name>Stapler Core</name>
-    <description>A HTTP request handling engine for Hudson</description>
+    <artifactId>stapler-core</artifactId>
+    
+    <name>Stapler Core Module</name>
+    <description>Core module of Hudson Stapler</description>
 
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
                 <executions>
                     <execution>
                         <goals>
@@ -36,89 +43,7 @@
             </plugin>
         </plugins>
     </build>
-    <dependencies>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.3</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>commons-discovery</groupId>
-            <artifactId>commons-discovery</artifactId>
-            <version>0.4</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-            <version>1.7.0</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>1.3.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jvnet.localizer</groupId>
-            <artifactId>localizer</artifactId>
-            <version>1.7</version>
-        </dependency>
-        <dependency>
-            <groupId>org.kohsuke.stapler</groupId>
-            <artifactId>json-lib</artifactId>
-            <version>2.1-rev6</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jvnet</groupId>
-            <artifactId>tiger-types</artifactId>
-            <version>1.3</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>r06</version>
-        </dependency>
-        <dependency>
-            <!-- optionally read in parameter names from the debug info -->
-            <groupId>asm</groupId>
-            <artifactId>asm-commons</artifactId>
-            <version>2.2.3</version>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <!-- perhaps mark this dependency optional? -->
-            <groupId>commons-fileupload</groupId>
-            <artifactId>commons-fileupload</artifactId>
-            <version>1.2.1</version>
-        </dependency>    
-        <!-- optional REST support -->
-        <dependency>
-            <groupId>com.sun.xml.txw2</groupId>
-            <artifactId>txw2</artifactId>
-            <version>20070624</version>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.5</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hudsonci.tools</groupId>
-            <artifactId>htmlunit</artifactId>
-            <version>2.6-hudson-3</version>
-            <scope>test</scope>
-            <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>org.mortbay.jetty</groupId>
-            <artifactId>jetty</artifactId>
-            <version>6.1.26</version>
-            <scope>test</scope>
-            <type>jar</type>
-        </dependency>
-    </dependencies>
+    
 
     <profiles>
         <profile>
@@ -147,5 +72,118 @@
             </build>
         </profile>
     </profiles>
+    <dependencies>
+        
+        <!-- TODO move this to parent -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+            <type>jar</type>
+            <scope>provided</scope>
+        </dependency>
+        
+        
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>r09</version>
+            <type>jar</type>
+        </dependency>
+        
+        <!--
+           TODO: Fix the Unit Test failure and move to 1.8.0
+        -->
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.7.0</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>1.3.2</version>
+            <type>jar</type>
+        </dependency>
+        
+        <!--
+           TODO: Fix the Unit Test failures and move to 3.1
+        -->
+        <dependency>
+            <groupId>asm</groupId>
+            <artifactId>asm-all</artifactId>
+            <version>2.2.3</version>
+            <type>jar</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>net.sf.json-lib</groupId>
+            <artifactId>json-lib</artifactId>
+            <version>2.4</version>
+            <classifier>jdk15</classifier>
+        </dependency>
+        
+        <dependency>
+            <groupId>commons-discovery</groupId>
+            <artifactId>commons-discovery</artifactId>
+            <version>0.4</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>2.2.5</version>
+            <type>jar</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jvnet</groupId>
+            <artifactId>tiger-types</artifactId>
+            <version>1.3</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.jvnet.localizer</groupId>
+            <artifactId>localizer</artifactId>
+            <version>1.11</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
+            <type>jar</type>
+        </dependency>
+        
+        <!--
+        <dependency>
+            <groupId>net.sourceforge.htmlunit</groupId>
+            <artifactId>htmlunit</artifactId>
+            <version>2.9</version>
+            <scope>test</scope>
+        </dependency>
+        -->
+        
+        <dependency>
+            <groupId>org.hudsonci.tools</groupId>
+            <artifactId>htmlunit</artifactId>
+            <version>2.6-hudson-3</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.mortbay.jetty</groupId>
+            <artifactId>jetty</artifactId>
+            <version>6.1.26</version>
+            <scope>test</scope>
+            <type>jar</type>
+        </dependency>
+    </dependencies>
 </project>
 

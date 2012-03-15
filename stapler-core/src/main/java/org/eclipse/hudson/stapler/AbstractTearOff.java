@@ -16,7 +16,6 @@
 package org.eclipse.hudson.stapler;
 
 import com.google.common.collect.MapMaker;
-
 import java.net.URL;
 import java.util.Map;
 

@@ -281,4 +281,20 @@ public class MockRequest implements HttpServletRequest {
         // TODO
         throw new UnsupportedOperationException();
     }
+
+    public int getRemotePort() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public String getLocalName() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public String getLocalAddr() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public int getLocalPort() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

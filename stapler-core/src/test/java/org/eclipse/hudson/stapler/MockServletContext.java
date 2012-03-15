@@ -119,4 +119,8 @@ public class MockServletContext implements ServletContext {
     public String getServletContextName() {
         return null;
     }
+
+    public String getContextPath() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
