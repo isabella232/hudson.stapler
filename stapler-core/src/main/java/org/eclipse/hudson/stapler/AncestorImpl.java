@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * @author Kohsuke Kawaguchi
  */
-class AncestorImpl implements Ancestor {
+public class AncestorImpl implements Ancestor {
     private final List<AncestorImpl> owner;
     private final int listIndex;
 
