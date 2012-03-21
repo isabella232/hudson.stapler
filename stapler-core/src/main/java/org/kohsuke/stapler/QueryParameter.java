@@ -1,6 +1,6 @@
 /*******************************************************************************
  *
- * Copyright (c) 2012 Oracle Corporation.
+ * Copyright (c) 2004-2010 Oracle Corporation.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -9,9 +9,9 @@
  *
  * Contributors: 
  *
- *    Winston Prakash
+ *    Kohsuke Kawaguchi
  *     
- *******************************************************************************/
+ *******************************************************************************/ 
 
 package org.kohsuke.stapler;
 
@@ -22,18 +22,28 @@ import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * @see org.eclipse.hudson.stapler.QueryParameter
- * @deprecated  As of release 3.0.0, replaced by {@link org.eclipse.hudson.stapler.QueryParameter} 
+ * Indicates that this parameter is injected from HTTP query parameter.
+ *
+ * @author Kohsuke Kawaguchi
  */
-@Deprecated
 @Retention(RUNTIME)
 @Target(PARAMETER)
 @Documented
 public @interface QueryParameter {
-     
+    /**
+     * query parameter name. By default, name of the parameter.
+     */
     String value() default "";
 
+    /**
+     * If true, request without this header will be rejected.
+     */
     boolean required() default false;
 
+    /**
+     * If true, and the actual value of this parameter is "",
+     * null is passed instead. This is useful to unify the treatment of
+     * the absence of the value vs the empty value.
+     */
     boolean fixEmpty() default false;
 }

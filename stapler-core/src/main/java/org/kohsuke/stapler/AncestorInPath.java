@@ -1,6 +1,6 @@
 /*******************************************************************************
  *
- * Copyright (c) 2012 Oracle Corporation.
+ * Copyright (c) 2004-2010 Oracle Corporation.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -9,7 +9,7 @@
  *
  * Contributors: 
  *
- *    Winston Prakash
+ *    Kohsuke Kawaguchi
  *     
  *******************************************************************************/ 
 
@@ -22,12 +22,13 @@ import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * @see org.eclipse.hudson.stapler.AncestorInPath
- * @deprecated  As of release 3.0.0, replaced by {@link org.eclipse.hudson.stapler.AncestorInPath} 
+ * Indicates that this parameter is injected by evaluating
+ * {@link StaplerRequest#findAncestorObject(Class)} with the parameter type.
+ *
+ * @author Kohsuke Kawaguchi
  */
 @Retention(RUNTIME)
 @Target(PARAMETER)
 @Documented
-@Deprecated
 public @interface AncestorInPath {
 }
