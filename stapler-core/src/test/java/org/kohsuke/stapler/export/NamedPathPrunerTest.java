@@ -19,17 +19,6 @@ import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.List;
 import junit.framework.TestCase;
-import org.kohsuke.stapler.export.Exported;
-import org.kohsuke.stapler.export.Exported;
-import org.kohsuke.stapler.export.ExportedBean;
-import org.kohsuke.stapler.export.ExportedBean;
-import org.kohsuke.stapler.export.Flavor;
-import org.kohsuke.stapler.export.Model;
-import org.kohsuke.stapler.export.Model;
-import org.kohsuke.stapler.export.ModelBuilder;
-import org.kohsuke.stapler.export.ModelBuilder;
-import org.kohsuke.stapler.export.NamedPathPruner;
-import org.kohsuke.stapler.export.NamedPathPruner;
 
 public class NamedPathPrunerTest extends TestCase {
 
@@ -62,7 +51,7 @@ public class NamedPathPrunerTest extends TestCase {
     public void testPruning() throws Exception {
         Jhob job1 = new Jhob("job1", "Job #1", "whatever");
         Jhob job2 = new Jhob("job2", "Job #2", "junk");
-        Vhew view1 = new Vhew("All", "crap", new Jhob[] {job1, job2});
+        Vhew view1 = new Vhew("All", "more", new Jhob[] {job1, job2});
         Vhew view2 = new Vhew("Some", "less", new Jhob[] {job1});
         Stuff bean = new Stuff(new Jhob[] {job1, job2}, Arrays.asList(view1, view2));
         assertResult("{jobs:[{displayName:Job #1,name:job1},{displayName:Job #2,name:job2}],"
