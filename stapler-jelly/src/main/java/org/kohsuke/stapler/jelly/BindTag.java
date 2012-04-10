@@ -36,11 +36,12 @@ public class BindTag extends AbstractStaplerTag {
 
     /**
      * JavaScript variable name to set the proxy to.
-     *
+     * <p>
      * This name can be arbitrary left hand side expression,
      * such as "a[0]" or "a.b.c".
+     *
+     * If this value is unspecified, the tag generates a JavaScript expression to create a proxy.
      */
-    @Required
     public void setVar(String varName) {
         this.varName = varName;
     }
@@ -58,14 +59,23 @@ public class BindTag extends AbstractStaplerTag {
         a.doTag(out);
 
         try {
-            out.startElement("script");
+            String expr;
             if (javaObject==null) {
-                out.write(varName+"=null;");
+                expr = "null";
             } else {
                 Bound h = WebApp.getCurrent().boundObjectTable.bind(javaObject);
-                out.write(varName+'='+h.getProxyScript()+';');
+                expr = h.getProxyScript();
             }
-            out.endElement("script");
+
+            if (varName==null) {
+                // this mode (of writing just the expression) needs to be used with caution because
+                // the adjunct tag above might produce <script> tag.
+                out.write(expr);
+            } else {
+                out.startElement("script");
+                out.write(varName + "=" + expr + ";");
+                out.endElement("script");
+            }
         } catch (SAXException e) {
             throw new JellyTagException(e);
         }

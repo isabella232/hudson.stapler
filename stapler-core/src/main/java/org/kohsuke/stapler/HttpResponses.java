@@ -64,6 +64,11 @@ public class HttpResponses {
         };
     }
 
+    @SuppressWarnings({"ThrowableInstanceNeverThrown"})
+    public static HttpResponseException error(int code, String errorMessage) {
+        return error(code,new Exception(errorMessage));
+    }
+
     public static HttpResponseException error(final int code, final Throwable cause) {
         return new HttpResponseException(cause) {
             public void generateResponse(StaplerRequest req, StaplerResponse rsp, Object node) throws IOException, ServletException {
@@ -92,6 +97,14 @@ public class HttpResponses {
                 rsp.sendRedirect2(sb.toString());
             }
         };
+    }
+
+    /**
+     * @param url
+     *      The URL to redirect to. If relative, relative to the page currently being served.
+     */
+    public static HttpRedirect redirectTo(String url) {
+        return new HttpRedirect(url);
     }
 
     /**
@@ -148,5 +161,37 @@ public class HttpResponses {
                 Stapler.getCurrent().serveStaticResource(req,rsp,resource,expiration);
             }
         };
+    }
+
+    /**
+     * Serves the literal HTML.
+     */
+    public static HttpResponse html(final String literalHtml) {
+        return new HttpResponse() {
+            public void generateResponse(StaplerRequest req, StaplerResponse rsp, Object node) throws IOException, ServletException {
+                rsp.setContentType("text/html;charset=UTF-8");
+                rsp.getWriter().println(literalHtml);
+            }
+        };
+    }
+
+    /**
+     * Serves the plain text.
+     */
+    public static HttpResponse plainText(final String plainText) {
+        return new HttpResponse() {
+            public void generateResponse(StaplerRequest req, StaplerResponse rsp, Object node) throws IOException, ServletException {
+                rsp.setContentType("text/plain;charset=UTF-8");
+                rsp.getWriter().println(plainText);
+            }
+        };
+    }
+
+    public static ForwardToView forwardToView(Object it, String view) {
+        return new ForwardToView(it,view);
+    }
+
+    public static ForwardToView forwardToView(Class clazz, String view) {
+        return new ForwardToView(clazz,view);
     }
 }

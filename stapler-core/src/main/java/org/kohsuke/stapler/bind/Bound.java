@@ -15,9 +15,16 @@
 
 package org.kohsuke.stapler.bind;
 
+import org.kohsuke.stapler.ClassDescriptor;
 import org.kohsuke.stapler.HttpResponse;
+import org.kohsuke.stapler.MetaClass;
+import org.kohsuke.stapler.WebApp;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
 
 /**
  * Handles to the object bound via {@link BoundObjectTable}.
@@ -25,6 +32,7 @@ import java.lang.reflect.Method;
  * As {@link HttpResponse}, this object generates a redirect to the URL that it points to.
  *
  * @author Kohsuke Kawaguchi
+ * @see MetaClass#buildDispatchers(ClassDescriptor)
  */
 public abstract class Bound implements HttpResponse {
     /**
@@ -49,15 +57,30 @@ public abstract class Bound implements HttpResponse {
      * talks back to the bound object that this handle represents.
      */
     public final String getProxyScript() {
-        StringBuilder buf = new StringBuilder("makeStaplerProxy('").append(getURL()).append("',[");
+        StringBuilder buf = new StringBuilder("makeStaplerProxy('").append(getURL()).append("','").append(
+                WebApp.getCurrent().getCrumbIssuer().issueCrumb()
+        ).append("',[");
 
         boolean first=true;
         for (Method m : getTarget().getClass().getMethods()) {
-            if (!m.getName().startsWith("js"))   continue;  // not a JavaScript method
+            Collection<String> names;
+            if (m.getName().startsWith("js")) {
+                names = Collections.singleton(camelize(m.getName().substring(2)));
+            } else {
+                JavaScriptMethod a = m.getAnnotation(JavaScriptMethod.class);
+                if (a!=null) {
+                    names = Arrays.asList(a.name());
+                    if (names.isEmpty())
+                        names = Collections.singleton(m.getName());
+                } else
+                    continue;
+            }
 
-            if (first)  first = false;
-            else        buf.append(',');
-            buf.append('\'').append(camelize(m.getName().substring(2))).append('\'');
+            for (String n : names) {
+                if (first)  first = false;
+                else        buf.append(',');
+                buf.append('\'').append(n).append('\'');
+            }
         }
         buf.append("])");
         

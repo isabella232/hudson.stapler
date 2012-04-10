@@ -24,6 +24,7 @@ import org.jvnet.maven.jellydoc.annotation.NoContent;
 import org.jvnet.maven.jellydoc.annotation.Required;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Writes out links to adjunct CSS and JavaScript, if not done so already.
@@ -33,15 +34,28 @@ import java.io.IOException;
 @NoContent
 public class AdjunctTag extends AbstractStaplerTag {
     private String[] includes;
+    private String[] assumes;
 
     /**
      * Comma-separated adjunct names.
      */
-    @Required
     public void setIncludes(String _includes) {
-        includes = _includes.split(",");
-        for (int i = 0; i < includes.length; i++)
-              includes[i] = includes[i].trim();
+        includes = parse(_includes);
+    }
+
+    /**
+     * Comma-separated adjunct names that are externally included in the page
+     * and should be suppressed.
+     */
+    public void setAssumes(String _assumes) {
+        assumes = parse(_assumes);
+    }
+
+    private String[] parse(String s) {
+        String[] r = s.split(",");
+        for (int i = 0; i < r.length; i++)
+              r[i] = r[i].trim();
+        return r;
     }
 
     public void doTag(XMLOutput out) throws JellyTagException {
@@ -50,7 +64,11 @@ public class AdjunctTag extends AbstractStaplerTag {
             throw new IllegalStateException("AdjunctManager is not installed for this application");
 
         try {
-            AdjunctsInPage.get().generate(out,includes);
+            AdjunctsInPage a = AdjunctsInPage.get();
+            if (assumes!=null)
+                a.assumeIncluded(assumes);
+            if (includes!=null)
+                a.generate(out, includes);
         } catch (IOException e) {
             throw new JellyTagException(e);
         } catch (SAXException e) {

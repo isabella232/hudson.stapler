@@ -30,6 +30,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContextEvent;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -91,7 +92,7 @@ public class JellyFacet extends Facet {
             }
 
             public String toString() {
-                return "TOKEN.jelly for url=/TOKEN/...";
+                return "VIEW.jelly for url=/VIEW";
             }
         });
     }

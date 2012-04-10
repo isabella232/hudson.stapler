@@ -24,11 +24,6 @@ import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import org.kohsuke.stapler.export.Exported;
-import org.kohsuke.stapler.export.ExportedBean;
-import org.kohsuke.stapler.export.Flavor;
-import org.kohsuke.stapler.export.Model;
-import org.kohsuke.stapler.export.ModelBuilder;
 
 public class XMLDataWriterTest extends TestCase {
 
@@ -92,4 +87,10 @@ public class XMLDataWriterTest extends TestCase {
         assertEquals("<PA><v>1</v><v>2</v><v>3</v></PA>",serialize(new PA(),PA.class));
     }
 
+    public void testMakeXmlName() {
+        assertEquals("_",   XMLDataWriter.makeXmlName(""));
+        assertEquals("abc", XMLDataWriter.makeXmlName("abc"));
+        assertEquals("abc", XMLDataWriter.makeXmlName("/abc"));
+        assertEquals("abc", XMLDataWriter.makeXmlName("/a/b/c/"));
+    }
 }

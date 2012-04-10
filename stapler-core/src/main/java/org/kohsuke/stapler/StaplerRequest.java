@@ -32,6 +32,7 @@ import java.util.List;
 
 import net.sf.json.JSONObject;
 import net.sf.json.JSONArray;
+import org.kohsuke.stapler.bind.BoundObjectTable;
 
 /**
  * Defines additional parameters/operations made available by Stapler.
@@ -44,6 +45,11 @@ public interface StaplerRequest extends HttpServletRequest {
      * Gets the {@link Stapler} instance that this belongs to.
      */
     Stapler getStapler();
+
+    /**
+     * Short for {@code getStapler().getWebApp()}
+     */
+    WebApp getWebApp();
 
     /**
      * Returns the additional URL portion that wasn't used by the stapler,
@@ -426,4 +432,17 @@ public interface StaplerRequest extends HttpServletRequest {
      * Returns true if this request represents a server method call to a JavaScript proxy object.
      */
     boolean isJavaScriptProxyCall();
+
+    /**
+     * Short cut for obtaining {@link BoundObjectTable} associated with this webapp.
+     */
+    BoundObjectTable getBoundObjectTable();
+
+    /**
+     * Exports the given Java object as a JavaScript proxy and returns a JavaScript expression to create
+     * a proxy on the client side.
+     *
+     * Short cut for {@code getBoundObjectTable().bind(toBeExported).getProxyScript()}
+     */
+    String createJavaScriptProxy(Object toBeExported);
 }

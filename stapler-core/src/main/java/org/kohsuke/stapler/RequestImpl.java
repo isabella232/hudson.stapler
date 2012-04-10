@@ -27,6 +27,8 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.jvnet.tiger_types.Lister;
+import org.kohsuke.stapler.bind.Bound;
+import org.kohsuke.stapler.bind.BoundObjectTable;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -107,8 +109,20 @@ public class RequestImpl extends HttpServletRequestWrapper implements StaplerReq
         return ct!=null && ct.startsWith("application/x-stapler-method-invocation");
     }
 
+    public BoundObjectTable getBoundObjectTable() {
+        return stapler.getWebApp().boundObjectTable;
+    }
+
+    public String createJavaScriptProxy(Object toBeExported) {
+        return getBoundObjectTable().bind(toBeExported).getProxyScript();
+    }
+
     public Stapler getStapler() {
         return stapler;
+    }
+
+    public WebApp getWebApp() {
+        return stapler.getWebApp();
     }
 
     public String getRestOfPath() {

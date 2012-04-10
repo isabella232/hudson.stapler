@@ -65,7 +65,6 @@ public class JavaScriptProxyTest extends JettyTestCase {
     /**
      * Tests that an anonymous object can be bound.
      */
-    
 //    public void testAnonymousBind() throws Exception {
 //        WebClient wc = new WebClient();
 //        HtmlPage page = wc.getPage(new URL(url, "/bindAnonymous"));
@@ -80,10 +79,10 @@ public class JavaScriptProxyTest extends JettyTestCase {
     
     public void doIndex(StaplerRequest req,StaplerResponse rsp) throws IOException {
         rsp.setContentType("text/html");
-        //String crumb = req.getWebApp().getCrumbIssuer().issueCrumb();
+        String crumb = req.getWebApp().getCrumbIssuer().issueCrumb();
         PrintWriter w = rsp.getWriter();
         w.println("<html><body><script src='prototype'></script><script src='script'></script>");
-        w.println("<script>var v = makeStaplerProxy('/','"+"',['foo','bar']);var callback = function(t){var x=t.responseObject();alert(typeof(x)+':'+x)};</script>");
+        w.println("<script>var v = makeStaplerProxy('/','"+crumb+"',['foo','bar']);var callback = function(t){var x=t.responseObject();alert(typeof(x)+':'+x)};</script>");
         w.println("</body></html>");
     }
 
@@ -96,11 +95,11 @@ public class JavaScriptProxyTest extends JettyTestCase {
     }
 
     public HttpResponse doPrototype() {
-        return HttpResponses.staticResource(getClass().getResource("/org/eclipse/hudson/stapler/framework/prototype/prototype.js"));
+        return HttpResponses.staticResource(getClass().getResource("/org/kohsuke/stapler/framework/prototype/prototype.js"));
     }
 
     public HttpResponse doScript() {
-        return HttpResponses.staticResource(getClass().getResource("/org/eclipse/hudson/stapler/bind.js"));
+        return HttpResponses.staticResource(getClass().getResource("/org/kohsuke/stapler/bind.js"));
     }
 
     public class MyObject {
