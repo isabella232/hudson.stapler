@@ -148,7 +148,7 @@ public class InternationalizedStringExpression extends ExpressionSupport {
     /**
      * Wraps value to indicate it contains raw HTML that should not be escaped.
      */
-    public Object rawHtml(Object value) {
+    public static Object rawHtml(Object value) {
         return value != null ? new RawHtml(value) : null;
     }
 
