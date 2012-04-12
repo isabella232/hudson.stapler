@@ -19,11 +19,14 @@ import org.apache.commons.jelly.parser.XMLParser;
 import org.apache.commons.jelly.expression.ExpressionFactory;
 import org.apache.commons.jelly.expression.Expression;
 import org.apache.commons.jelly.expression.ExpressionSupport;
+import org.apache.commons.jelly.impl.ExpressionScript;
+import org.apache.commons.jelly.impl.ScriptBlock;
 import org.apache.commons.jelly.JellyContext;
 import org.apache.commons.jelly.JellyException;
 import org.apache.commons.jelly.TagLibrary;
 import org.kohsuke.stapler.MetaClassLoader;
 
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -101,6 +104,18 @@ class CustomJellyContext extends JellyContext {
 
     private static class CustomXMLParser extends XMLParser implements ExpressionFactory {
         private ResourceBundle resourceBundle;
+
+        private static Field escapeByDefaultField;
+        static
+        {
+            try {
+                escapeByDefaultField = XMLParser.class.getDeclaredField("escapeByDefault");
+                escapeByDefaultField.setAccessible(true);
+            } catch (Exception e) {
+                // inconsistent base class - ignore
+            }
+        }
+
         @Override
         protected ExpressionFactory createExpressionFactory() {
             return this;
@@ -142,6 +157,19 @@ class CustomJellyContext extends JellyContext {
 
         private InternationalizedStringExpression createI18nExp(String text) throws JellyException {
             return new InternationalizedStringExpression(getResourceBundle(),text);
+        }
+
+        @Override
+        protected void addExpressionScript(ScriptBlock script, Expression exp) {
+            try {
+                if (exp instanceof InternationalizedStringExpression && escapeByDefaultField.getBoolean(this)) {
+                    script.addScript(new ExpressionScript(((InternationalizedStringExpression) exp).escape()));
+                    return; // stick with our escaped+internationalized script
+                }
+            } catch (Exception e) {
+                // fall back to original behaviour...
+            }
+            super.addExpressionScript(script, exp);
         }
 
         private String unquote(String s) {
