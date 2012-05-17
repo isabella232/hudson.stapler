@@ -127,7 +127,8 @@ public class Stapler extends HttpServlet {
                 staticLink = true;
             }
 
-            if(servletPath.length()!=0 && !servletPath.startsWith("/WEB-INF/")) {
+            String resPath = servletPath.toLowerCase(Locale.ENGLISH);
+            if (servletPath.length() != 0 && !resPath.startsWith("/web-inf") && !resPath.startsWith("/meta-inf")) {
                 // getResource requires '/' prefix (and resin insists on that, too) but servletPath can be empty string (hudson #879)
                 // so make sure servletPath is at least length 1 before calling getResource()
 
@@ -175,6 +176,7 @@ public class Stapler extends HttpServlet {
      * Hence the need for this tuple.
      */
     private static final class OpenConnection {
+
         final URLConnection connection;
         final InputStream stream;
 
@@ -184,7 +186,11 @@ public class Stapler extends HttpServlet {
         }
 
         private OpenConnection(URLConnection connection) throws IOException {
-            this(connection,connection.getInputStream());
+            this(connection, connection.getInputStream());
+        }
+
+        private void close() throws IOException {
+            stream.close();
         }
     }
 
@@ -229,12 +235,18 @@ public class Stapler extends HttpServlet {
      * Serves the specified {@link URLConnection} as a static resource.
      */
     boolean serveStaticResource(HttpServletRequest req, StaplerResponse rsp, OpenConnection con, long expiration) throws IOException {
-        if(con==null)   return false;
-        return serveStaticResource(req,rsp, con.stream,
-                con.connection.getLastModified(),
-                expiration,
-                con.connection.getContentLength(),
-                con.connection.getURL().toString());
+        if (con == null) {
+            return false;
+        }
+        try {
+            return serveStaticResource(req, rsp, con.stream,
+                    con.connection.getLastModified(),
+                    expiration,
+                    con.connection.getContentLength(),
+                    con.connection.getURL().toString());
+        } finally {
+            con.close();
+        }
     }
 
     /**
@@ -372,7 +384,7 @@ public class Stapler extends HttpServlet {
 
                         // ritual for responding to a partial GET
                         rsp.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
-                        rsp.setHeader("Content-Range",s+"-"+e+'/'+contentLength);
+                        rsp.setHeader("Content-Range", s + "-" + (e - 1) + '/' + contentLength);
 
                         // prepare to send the partial content
                         DataInputStream dis = new DataInputStream(in);
