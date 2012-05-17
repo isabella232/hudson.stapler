@@ -24,11 +24,40 @@
     
     <artifactId>stapler-core</artifactId>
     
-    <name>Stapler Core Module</name>
+    <name>Stapler Core</name>
     <description>Core module of Hudson Stapler</description>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+                <executions>
+                    <execution>
+                        <!-- Just compile only the Annotation Processor Classes first -->
+                        <id>default-compile</id>
+                        <configuration>
+                            <compilerArgument>-proc:none</compilerArgument>
+                            <includes>
+                                <include>org/kohsuke/stapler/DataBoundConstructorAPT6.java</include>
+                                <include>org/kohsuke/stapler/QueryParameterAPT6.java</include>
+                                <include>org/kohsuke/stapler/export/ExportedBeanAPT6.java</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>compile-everything-else</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
