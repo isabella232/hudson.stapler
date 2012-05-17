@@ -34,7 +34,6 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 
-import org.kohsuke.MetaInfServices;
 import org.kohsuke.stapler.AbstractAPT6;
 import org.kohsuke.stapler.AbstractAPT6.Content;
 
@@ -50,7 +49,6 @@ import com.google.common.io.CharStreams;
  */
 @SupportedAnnotationTypes( "org.kohsuke.stapler.export.Exported" )
 @SupportedSourceVersion( SourceVersion.RELEASE_6 )
-@MetaInfServices( Processor.class )
 public final class ExportedBeanAPT6
     extends AbstractAPT6
 {

@@ -31,7 +31,6 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 
-import org.kohsuke.MetaInfServices;
 import org.kohsuke.stapler.AbstractAPT6.Content;
 
 import com.google.common.base.Charsets;
@@ -44,7 +43,6 @@ import com.google.common.io.ByteStreams;
  */
 @SupportedAnnotationTypes( "org.kohsuke.stapler.QueryParameter" )
 @SupportedSourceVersion( SourceVersion.RELEASE_6 )
-@MetaInfServices( Processor.class )
 public final class QueryParameterAPT6
     extends AbstractAPT6
 {

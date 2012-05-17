@@ -1,0 +1,3 @@
+org.kohsuke.stapler.DataBoundConstructorAPT6
+org.kohsuke.stapler.QueryParameterAPT6
+org.kohsuke.stapler.export.ExportedBeanAPT6

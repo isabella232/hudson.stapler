@@ -34,7 +34,6 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.ElementScanner6;
 
-import org.kohsuke.MetaInfServices;
 import org.kohsuke.stapler.AbstractAPT6.Content;
 
 /**
@@ -44,7 +43,6 @@ import org.kohsuke.stapler.AbstractAPT6.Content;
  */
 @SupportedAnnotationTypes( "*" )
 @SupportedSourceVersion( SourceVersion.RELEASE_6 )
-@MetaInfServices( Processor.class )
 public final class DataBoundConstructorAPT6
     extends AbstractAPT6
 {
