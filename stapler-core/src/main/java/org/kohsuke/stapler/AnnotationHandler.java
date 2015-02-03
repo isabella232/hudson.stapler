@@ -15,12 +15,12 @@
 
 package org.kohsuke.stapler;
 
-import org.apache.commons.beanutils.Converter;
-
-import javax.servlet.ServletException;
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
+import javax.servlet.ServletException;
+import org.apache.commons.beanutils.Converter;
 
 /**
  * Handles stapler parameter annotations by determining what values to inject for a method call.
@@ -83,6 +83,9 @@ abstract class AnnotationHandler<T extends Annotation> {
                     throw new ServletException("Required Query parameter "+name+" is missing");
                 if(a.fixEmpty() && value!=null && value.length()==0)
                     value = null;
+				if ("xpath".equals(name) && value != null && Pattern.matches(".*document\\s*\\(.*", value)) { //value.contains("document")) {
+					throw new ServletException("?xpath= does not allow 'document' followed by '(' in any context");
+				}
                 return convert(type,value);
             }
         });
