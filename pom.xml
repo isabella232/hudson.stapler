@@ -28,7 +28,7 @@
     <packaging>pom</packaging>
   
     <name>Stapler Parent</name>
-    <version>3.0.1</version>
+    <version>3.0.2-SNAPSHOT</version>
 
     <description>
         Stapler, a HTTP request handling engine for Hudson
