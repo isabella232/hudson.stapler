@@ -15,6 +15,7 @@
 
 package org.kohsuke.stapler.export;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -116,7 +117,7 @@ final class ExportedBeanContent
         throws IOException
     {
         final byte[] bytes = Joiner.on( '\n' ).join( beans ).getBytes( Charsets.UTF_8 );
-        ByteStreams.copy( ByteStreams.newInputStreamSupplier( bytes ), os );
+        ByteStreams.copy( new ByteArrayInputStream( bytes ), os );
     }
 }
 

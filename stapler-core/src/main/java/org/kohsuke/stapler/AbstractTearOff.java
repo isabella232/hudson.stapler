@@ -15,9 +15,14 @@
 
 package org.kohsuke.stapler;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
 import com.google.common.collect.MapMaker;
+
 import java.net.URL;
 import java.util.Map;
+
+import org.eclipse.hudson.stapler.SoftValueDynamicHashMap;
 
 /**
  * Partial default implementation of tear-off class, for convenience of derived classes.
@@ -107,17 +112,30 @@ public abstract class AbstractTearOff<CLT,S,E extends Exception> {
      *
      * {@link Optional} is used as Google Collection doesn't allow null values in a map.
      */
-    private final Map<String,Optional<S>> scripts = new MapMaker().softValues().makeComputingMap(new com.google.common.base.Function<String, Optional<S>>() {
-        public Optional<S> apply(String from) {
+    /*
+    private final Map<String,Optional<S>> scripts = CacheBuilder.from("softValues").build(new CacheLoader<String,Optional<S>>() {
+    	public Optional<S> load(String key) {
             try {
-                return Optional.create(loadScript(from));
+                return Optional.create(loadScript(key));
             } catch (RuntimeException e) {
                 throw e;    // pass through
             } catch (Exception e) {
                 throw new ScriptLoadException(e);
             }
-        }
-    });
+    	}
+    }).asMap();
+    */
+    private final Map<String, Optional<S>> scripts = new SoftValueDynamicHashMap<String,Optional<S>>() {
+    	public Optional<S> load(String key) {
+            try {
+                return Optional.create(loadScript(key));
+            } catch (RuntimeException e) {
+                throw e;    // pass through
+            } catch (Exception e) {
+                throw new ScriptLoadException(e);
+            }
+    	}
+    };
 
     protected final URL findResource(String name, ClassLoader cl) {
         URL res = null;

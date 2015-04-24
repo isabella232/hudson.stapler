@@ -15,6 +15,7 @@
 
 package org.kohsuke.stapler;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -101,6 +102,6 @@ final class QueryParameterContent
         }
 
         final byte[] bytes = buf.toString().getBytes( Charsets.UTF_8 );
-        ByteStreams.copy( ByteStreams.newInputStreamSupplier( bytes ), os );
+        ByteStreams.copy( new ByteArrayInputStream( bytes ), os );
     }
 }
