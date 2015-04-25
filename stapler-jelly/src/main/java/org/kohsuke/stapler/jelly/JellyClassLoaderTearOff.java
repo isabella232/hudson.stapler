@@ -31,8 +31,6 @@ import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.Map;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
 import com.google.common.collect.MapMaker;
 import com.google.common.base.Function;
 
@@ -60,8 +58,8 @@ public class JellyClassLoaderTearOff {
         if(taglibs!=null)
             m = taglibs.get();
         if(m==null) {
-            m = CacheBuilder.from("weakKeys").build(new CacheLoader<String,TagLibrary>() {
-                public TagLibrary load(String nsUri) {
+            m = new MapMaker().makeComputingMap(new Function<String,TagLibrary>() {
+                public TagLibrary apply(String nsUri) {
                     if(owner.parent!=null) {
                         // parent first
                         TagLibrary tl = owner.parent.loadTearOff(JellyClassLoaderTearOff.class).getTagLibrary(nsUri);
@@ -80,7 +78,7 @@ public class JellyClassLoaderTearOff {
 
                     return NO_SUCH_TAGLIBRARY;    // "not found" is also cached.
                 }
-            }).asMap();
+            });
             taglibs = new WeakReference<Map<String,TagLibrary>>(m);
         }
 

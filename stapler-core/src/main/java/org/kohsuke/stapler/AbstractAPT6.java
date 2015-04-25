@@ -112,8 +112,7 @@ public abstract class AbstractAPT6
         }
         finally
         {
-            //Closeables.closeQuietly( os );
-            try { if (os != null) os.close(); } catch (Exception e) { }
+            Closeables.closeQuietly( os );
         }
     }
 }

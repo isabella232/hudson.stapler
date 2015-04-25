@@ -15,16 +15,11 @@
 
 package org.kohsuke.stapler;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
 import com.google.common.collect.MapMaker;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.eclipse.hudson.stapler.SoftValueDynamicHashMap;
-
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
@@ -160,11 +155,8 @@ abstract class Function {
             throw new AssertionError(e);    // impossible
         }
 
-        // This was formerly a weakKey map, but class objects are never gc'd unless the classes
-        // are, so the weak references are essentially strong until undeploy.
-        // The presence of a class in this map should not prevent undeploy, as Function will be gc'd.
-        PARSE_METHODS = new SoftValueDynamicHashMap<Class,Function>() {
-        	public Function load(Class from) {
+        PARSE_METHODS = new MapMaker().weakKeys().makeComputingMap(new com.google.common.base.Function<Class,Function>() {
+            public Function apply(Class from) {
                 // MethdFunction for invoking a static method as a static method
                 FunctionList methods = new ClassDescriptor(from).methods.name("fromStapler");
                 switch (methods.size()) {
@@ -196,7 +188,7 @@ abstract class Function {
                     };
                 }
             }
-        };
+        });
     }
 
     public static Object returnNull() { return null; }
