@@ -219,7 +219,7 @@ public class RequestImpl extends HttpServletRequestWrapper implements StaplerReq
 
         // send out Last-Modified, or check If-Modified-Since
         String since = getHeader("If-Modified-Since");
-        SimpleDateFormat format = Stapler.HTTP_DATE_FORMAT.get();
+        Stapler.StaplerDateFormat format = Stapler.HTTP_DATE_FORMAT;
         if(since!=null) {
             try {
                 long ims = format.parse(since).getTime();

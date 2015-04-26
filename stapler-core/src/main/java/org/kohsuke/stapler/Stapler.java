@@ -24,6 +24,7 @@ import org.apache.commons.beanutils.converters.DoubleConverter;
 import org.apache.commons.beanutils.converters.FloatConverter;
 import org.apache.commons.beanutils.converters.IntegerConverter;
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.kohsuke.stapler.bind.BoundObjectTable;
 
 import javax.servlet.RequestDispatcher;
@@ -322,7 +323,7 @@ public class Stapler extends HttpServlet {
             {// send out Last-Modified, or check If-Modified-Since
                 if(lastModified!=0) {
                     String since = req.getHeader("If-Modified-Since");
-                    SimpleDateFormat format = HTTP_DATE_FORMAT.get();
+                    StaplerDateFormat format = HTTP_DATE_FORMAT;
                     if(since!=null) {
                         try {
                             long ims = format.parse(since).getTime();
@@ -765,11 +766,18 @@ public class Stapler extends HttpServlet {
     public static Stapler getCurrent() {
         return CURRENT_REQUEST.get().getStapler();
     }
+    
+    static class StaplerDateFormat extends FastDateFormat {
+    	public StaplerDateFormat(String format, Locale locale) {
+    		super(format, TimeZone.getDefault(), locale);
+    	}
+    }
 
     /**
      * HTTP date format. Notice that {@link SimpleDateFormat} is thread unsafe.
      */
-    static final ThreadLocal<SimpleDateFormat> HTTP_DATE_FORMAT =
+    static final StaplerDateFormat HTTP_DATE_FORMAT = new StaplerDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
+    /*
         new ThreadLocal<SimpleDateFormat>() {
             protected @Override SimpleDateFormat initialValue() {
                 // RFC1945 section 3.3 Date/Time Formats states that timezones must be in GMT
@@ -778,6 +786,7 @@ public class Stapler extends HttpServlet {
                 return format;
             }
         };
+    */
 
     private static ThreadLocal<RequestImpl> CURRENT_REQUEST = new ThreadLocal<RequestImpl>();
     private static ThreadLocal<ResponseImpl> CURRENT_RESPONSE = new ThreadLocal<ResponseImpl>();
