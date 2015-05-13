@@ -28,7 +28,7 @@
     <packaging>pom</packaging>
   
     <name>Stapler Parent</name>
-    <version>3.0.3-SNAPSHOT</version>
+    <version>3.0.3</version>
     <url>http://hudson-ci.org/</url>
 
     <description>
