@@ -29,6 +29,7 @@
   
     <name>Stapler Parent</name>
     <version>3.0.3-SNAPSHOT</version>
+    <url>http://hudson-ci.org/</url>
 
     <description>
         Stapler, a HTTP request handling engine for Hudson
@@ -50,6 +51,14 @@
 
 
     <developers>
+        <developer>
+            <id>bobfoster</id>
+            <name>Bob Foster</name>
+            <email>bobfoster@gmail.com</email>
+            <roles>
+                <role>Maintainer</role>
+            </roles>
+        </developer>
         <developer>
             <id>wjprakash</id>
             <name>Winston Prakash</name>
@@ -106,5 +115,22 @@
 
     </dependencies>
  
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.1</version>
+                <configuration>
+                    <!-- enable release profile during the release, create IPS package, and sign bits. -->
+                    <prepareVerifyArgs>-P release,sign</prepareVerifyArgs>
+                    <goals>-DskipTests javadoc:javadoc deploy javadoc:aggregate</goals>
+                    <pushChanges>false</pushChanges>
+                    <localCheckout>true</localCheckout>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 
 </project>
